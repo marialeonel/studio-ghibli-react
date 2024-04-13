@@ -2,11 +2,15 @@ import Input from '../input/Input.js';
 import Cards from '../card/Card.js';
 import Container from 'react-bootstrap/Container';
 import './Display.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function Display(){
     const [allMovies, setAllMovies] = useState([]);
     const [filteredMovies, setFilteredMovies] = useState([]);
+
+    useEffect(() => {
+        getAllMovies();
+      }, []);
 
     async function getAllMovies(){
         await fetch('https://ghibliapi.vercel.app/films')
@@ -26,14 +30,14 @@ function Display(){
     }
 
     function filterMovies(term){
-        const filtered = allMovies.filter(movie => movie.title.toLowerCase().includes(term).toLowerCase());
-        setFilteredMovies(filtered);
+        filteredMovies = allMovies.filter(movie => movie.title.toLowerCase().includes(term).toLowerCase());
+        setFilteredMovies(filteredMovies);
     }
 
     return (
     <Container className="container-display">
         <Input></Input>
-        <Cards></Cards>
+        <Cards movies={filteredMovies}></Cards>
     </Container>
     );
 

@@ -1,17 +1,18 @@
 import Card from 'react-bootstrap/Card';
 
-function Cards() {
+function Cards({ movies }) {
   return (
-    <Card style={{ width: '18rem' }}>
-      <Card.Img variant="top" src="holder.js/100px180" />
-      <Card.Body>
-        <Card.Title>Card Title</Card.Title>
-        <Card.Text>
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
-        </Card.Text>
-      </Card.Body>
-    </Card>
+    <div className="row">
+      {movies.map((movie) => (
+        <Card key={movie.id} style={{ width: '18rem', margin: '20px' }}>
+          <Card.Img variant="top" src={movie.image} style={{marginTop: '10px'}} />
+          <Card.Body>
+            <Card.Title>{movie.title}</Card.Title>
+            <Card.Text>{movie.description}</Card.Text>
+          </Card.Body>
+        </Card>
+      ))}
+    </div>
   );
 }
 
