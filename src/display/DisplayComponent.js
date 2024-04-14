@@ -3,10 +3,12 @@ import Cards from '../card/Card.js';
 import Container from 'react-bootstrap/Container';
 import './Display.css';
 import { useState, useEffect } from 'react';
+import Modal from '../modal/Modal.js';
 
 function Display(){
     const [allMovies, setAllMovies] = useState([]);
     const [filteredMovies, setFilteredMovies] = useState([]);
+    const [modal, setModal] = useState(false);
 
     useEffect(() => {
         getAllMovies();
@@ -29,15 +31,26 @@ function Display(){
         });
     }
 
+    function handleSearchTermChange(newTerm){
+        filterMovies(newTerm);
+    }
+
     function filterMovies(term){
-        filteredMovies = allMovies.filter(movie => movie.title.toLowerCase().includes(term).toLowerCase());
-        setFilteredMovies(filteredMovies);
+        const filtered = allMovies.filter(movie => movie.title.toLowerCase().includes(term.toLowerCase()));
+        setFilteredMovies(filtered);
+        if (filtered.length === 0 && term.trim() !== '') {
+            setModal(true);
+        } else {
+            setModal(false);
+        }
+        
     }
 
     return (
     <Container className="container-display">
-        <Input></Input>
+        <Input onSearchTermChange={handleSearchTermChange}></Input>
         <Cards movies={filteredMovies}></Cards>
+        <Modal show={modal} onHide={() => setModal(false)}></Modal>
     </Container>
     );
 
