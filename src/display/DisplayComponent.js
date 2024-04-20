@@ -1,9 +1,12 @@
 import Input from '../input/Input.js';
-import Cards from '../card/Card.js';
+//import Cards from '../card/Card.js';
 import Container from 'react-bootstrap/Container';
 import './Display.css';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import Modal from '../modal/Modal.js';
+import Spinner from 'react-bootstrap/Spinner';
+
+const Cards = React.lazy(() => import('../card/Card.js'));
 
 function Display(){
     const [allMovies, setAllMovies] = useState([]);
@@ -49,7 +52,15 @@ function Display(){
     return (
     <Container className="container-display">
         <Input onSearchTermChange={handleSearchTermChange}></Input>
-        <Cards movies={filteredMovies}></Cards>
+        <Suspense fallback={
+                <div style={{ textAlign: 'center', margin: '20px' }}>
+                    <Spinner animation="border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                </div>
+            }>
+            <Cards movies={filteredMovies} />
+        </Suspense>
         <Modal show={modal} onHide={() => setModal(false)}></Modal>
     </Container>
     );
