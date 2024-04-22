@@ -1,76 +1,34 @@
-import Input from '../input/Input.js';
-//import Cards from '../card/Card.js';
+import React, { useContext, Suspense } from 'react';
 import Container from 'react-bootstrap/Container';
-import './Display.css';
-import React, { useState, useEffect, Suspense } from 'react';
-import Modal from '../modal/Modal.js';
 import Spinner from 'react-bootstrap/Spinner';
+import { MovieContext } from '../context/MovieContext';
+import Input from '../input/Input.js';
+import Modal from '../modal/Modal.js';
 
 const Cards = React.lazy(() => delayForDemo(import('../card/Card.js')));
 
-function Display(){
-    const [allMovies, setAllMovies] = useState([]);
-    const [filteredMovies, setFilteredMovies] = useState([]);
-    const [modal, setModal] = useState(false);
-
-    useEffect(() => {
-        getAllMovies();
-      }, []);
-
-    async function getAllMovies(){
-        await fetch('https://ghibliapi.vercel.app/films')
-        .then(response => {
-            if (!response.ok) {
-            throw new Error('Erro ao carregar os dados');
-            }
-            return response.json();
-        })
-        .then(data => {
-            setAllMovies(data);
-            setFilteredMovies(data); 
-        })
-        .catch(error => {
-            console.error('Houve um erro:', error);
-        });
-    }
-
-    function handleSearchTermChange(newTerm){
-        filterMovies(newTerm);
-    }
-
-    function filterMovies(term){
-        const filtered = allMovies.filter(movie => movie.title.toLowerCase().includes(term.toLowerCase()));
-        setFilteredMovies(filtered);
-        if (filtered.length === 0 && term.trim() !== '') {
-            setModal(true);
-        } else {
-            setModal(false);
-        }
-        
-    }
+function Display() {
+    const { filteredMovies, modal, setModal } = useContext(MovieContext);
 
     return (
-    <Container className="container-display">
-        <Input onSearchTermChange={handleSearchTermChange}></Input>
-        <Suspense fallback={
+        <Container className="container-display">
+            <Input />
+            <Suspense fallback={
                 <div style={{ textAlign: 'center', margin: '20px' }}>
-                    <Spinner animation="border" role="status">
-                    </Spinner>
+                    <Spinner animation="border" role="status" />
                 </div>
             }>
-            <Cards movies={filteredMovies} />
-        </Suspense>
-        <Modal show={modal} onHide={() => setModal(false)}></Modal>
-    </Container>
+                <Cards movies={filteredMovies} />
+            </Suspense>
+            <Modal show={modal} onHide={() => setModal(false)} />
+        </Container>
     );
-
 }
 
 function delayForDemo(promise) {
     return new Promise(resolve => {
-      setTimeout(resolve, 1500);
+        setTimeout(resolve, 1500);
     }).then(() => promise);
-  }
-  
+}
 
 export default Display;
