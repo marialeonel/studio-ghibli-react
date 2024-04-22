@@ -4,6 +4,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import { MovieContext } from '../context/MovieContext';
 import Input from '../input/Input.js';
 import Modal from '../modal/Modal.js';
+import './Display.css';
 
 const Cards = React.lazy(() => delayForDemo(import('../card/Card.js')));
 
