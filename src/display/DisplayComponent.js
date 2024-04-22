@@ -6,7 +6,7 @@ import React, { useState, useEffect, Suspense } from 'react';
 import Modal from '../modal/Modal.js';
 import Spinner from 'react-bootstrap/Spinner';
 
-const Cards = React.lazy(() => import('../card/Card.js'));
+const Cards = React.lazy(() => delayForDemo(import('../card/Card.js')));
 
 function Display(){
     const [allMovies, setAllMovies] = useState([]);
@@ -55,7 +55,6 @@ function Display(){
         <Suspense fallback={
                 <div style={{ textAlign: 'center', margin: '20px' }}>
                     <Spinner animation="border" role="status">
-                        <span className="visually-hidden">Loading...</span>
                     </Spinner>
                 </div>
             }>
@@ -66,5 +65,12 @@ function Display(){
     );
 
 }
+
+function delayForDemo(promise) {
+    return new Promise(resolve => {
+      setTimeout(resolve, 1500);
+    }).then(() => promise);
+  }
+  
 
 export default Display;

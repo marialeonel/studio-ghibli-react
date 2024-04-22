@@ -16,10 +16,6 @@ function Input({onSearchTermChange}){
             aria-describedby="inputGroup-sizing-default"
             required
             />
-            
-            <Form.Control.Feedback type="invalid">
-                Please provide a valid state.
-            </Form.Control.Feedback>
         </InputGroup>
     );
 }
