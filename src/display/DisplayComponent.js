@@ -28,7 +28,7 @@ function Display() {
 
 function delayForDemo(promise) {
     return new Promise(resolve => {
-        setTimeout(resolve, 1500);
+        setTimeout(resolve, 2000);
     }).then(() => promise);
 }
 
